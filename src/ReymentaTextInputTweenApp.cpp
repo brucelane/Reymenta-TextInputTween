@@ -115,7 +115,7 @@ void ReymentaTextInputTweenApp::update()
 
 void ReymentaTextInputTweenApp::draw()
 {
-    gl::clear( Color( 0.39f, 0.025f, 0.0f ) ); // red/brown to be different
+    gl::clear( Color( 0.0f, 0.0f, 0.0f ) ); // red/brown to be different
     
 	gl::setMatrices(mCam);
 	gl::multModelView(mSceneMatrix().inverted());
