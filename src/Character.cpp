@@ -18,12 +18,13 @@ Character::Character( gl::TextureFontRef textureFont, string character, Matrix44
 	mTextureFont = textureFont;
 	mChar = character;
 	
-	mColorStart = ColorAf( 1.0f, 0.5f, 1.0f, 0.0f );
+	mColorStart = ColorAf( 0.0f, 0.0f, 0.0f, 0.0f );
 	mColorCur	= mColorStart;
 	
-	float hue = Rand::randFloat( 0.55f, 0.6f );
-	float sat = Rand::randFloat( 0.5f, 1.0f );
-	mColorDest	= ColorAf( CM_HSV, hue, sat, 1.0f, 1.0f );
+	//float hue = Rand::randFloat( 0.55f, 0.6f );
+	//float sat = Rand::randFloat( 0.5f, 1.0f );
+	//mColorDest	= ColorAf( CM_HSV, hue, sat, 1.0f, 1.0f );
+	mColorDest = ColorAf(1.0f, 1.0f, 1.0f, 1.0f);
 	mMatrix = mDestMatrix = matrix;
 	
 	mKernBounds = Rectf( 0.0f, 0.0f, mTextureFont->measureString( mChar ).x, mTextureFont->getAscent() );

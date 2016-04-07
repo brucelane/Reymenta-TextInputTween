@@ -32,7 +32,7 @@ void ReymentaTextInputTweenApp::setup()
 	gl::enableAlphaBlending();
 
 	// font
-	Font customFont(Font(loadResource(RES_TEXTTWEEN), 100));
+	Font customFont(Font(loadResource(RES_TEXTTWEEN), 400));
 	gl::TextureFont::Format f;
 	f.enableMipmapping(true);
 	mTextureFont = gl::TextureFont::create(customFont, f);
@@ -46,7 +46,7 @@ void ReymentaTextInputTweenApp::setup()
 	mSceneMatrix = mSceneDestMatrix = Matrix44f::identity();
 
 	// init text
-	addChar('_');
+	//addChar('.');
 }
 void ReymentaTextInputTweenApp::keyDown(KeyEvent event)
 {
@@ -62,7 +62,7 @@ void ReymentaTextInputTweenApp::keyDown(KeyEvent event)
 }
 void ReymentaTextInputTweenApp::addChar(char c)
 {
-	c = tolower(c); // Alphabet-IV.tff seems to be missing some capital letters (strange, since it's an all-caps font)
+	c = toupper(c); // Alphabet-IV.tff seems to be missing some capital letters (strange, since it's an all-caps font)
 	int count = mCharacters.size();
 
 	if (count > 0)
@@ -70,14 +70,14 @@ void ReymentaTextInputTweenApp::addChar(char c)
 
 	Matrix44f randStartMatrix = mSceneDestMatrix;
 	randStartMatrix.translate(getRandomVec3f(100.0f, 600.0f));
-	randStartMatrix.rotate(getRandomVec3f(2.0f, 6.0f));
+	//randStartMatrix.rotate(getRandomVec3f(2.0f, 6.0f));
 
 	mCharacters.push_back(Character(mTextureFont, string(&c, 1), randStartMatrix));
 
 	mSceneDestMatrix.translate(Vec3f(mCharacters.back().getKernBounds().getWidth() / 2.0f, 0.0f, 0.0f));
 
 	float t = (count + 281) / 50.0f;
-	mSceneDestMatrix.rotate(Vec3f(sin(t)*0.1f, cos(t)*0.2f, cos(t)*0.05f)); // makes the scene meander
+	//mSceneDestMatrix.rotate(Vec3f(sin(t)*0.1f, cos(t)*0.2f, cos(t)*0.05f)); // makes the scene meander
 
 	mCharacters.back().animIn(timeline(), mSceneDestMatrix);
 
@@ -97,7 +97,7 @@ void ReymentaTextInputTweenApp::removeChar()
 
 		Matrix44f randStartMatrix = mSceneDestMatrix;
 		randStartMatrix.translate(getRandomVec3f(100.0f, 600.0f));
-		randStartMatrix.rotate(getRandomVec3f(2.0f, 6.0f));
+		//randStartMatrix.rotate(getRandomVec3f(2.0f, 6.0f));
 
 		mDyingCharacters.back().animOut(timeline(), randStartMatrix);
 
@@ -146,14 +146,14 @@ void ReymentaTextInputTweenApp::draw()
     }
 
     // Show the user what it is sending
-    char txt[256];
-    sprintf_s(txt, "Sending as [%s]", SenderName);
+    //char txt[256];
+    //sprintf_s(txt, "Sending as [%s]", SenderName);
     gl::setMatricesWindow( getWindowSize() );
-    gl::enableAlphaBlending();
-    gl::drawString( txt, Vec2f( toPixels( 20 ), toPixels( 20 ) ), Color( 1, 1, 1 ), Font( "Verdana", toPixels( 24 ) ) );
-    sprintf_s(txt, "fps : %2.2d", (int)getAverageFps());
-    gl::drawString( txt, Vec2f(getWindowWidth() - toPixels( 100 ), toPixels( 20 ) ), Color( 1, 1, 1 ), Font( "Verdana", toPixels( 24 ) ) );
-    gl::disableAlphaBlending();
+    //gl::enableAlphaBlending();
+    //gl::drawString( txt, Vec2f( toPixels( 20 ), toPixels( 20 ) ), Color( 1, 1, 1 ), Font( "Verdana", toPixels( 24 ) ) );
+    //sprintf_s(txt, "fps : %2.2d", (int)getAverageFps());
+    //gl::drawString( txt, Vec2f(getWindowWidth() - toPixels( 100 ), toPixels( 20 ) ), Color( 1, 1, 1 ), Font( "Verdana", toPixels( 24 ) ) );
+    //gl::disableAlphaBlending();
     // ----------------------------
 }
 // -------- SPOUT -------------
