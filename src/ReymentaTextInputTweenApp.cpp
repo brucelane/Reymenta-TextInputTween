@@ -113,7 +113,7 @@ void ReymentaTextInputTweenApp::update()
 
 	//mCam.lookAt(Vec3f(300.0f, 0.0f, mCamDist), Vec3f::zero(), Vec3f::yAxis());
 	mCam.lookAt(Vec3f(0.0f, 0.0f, 600.0f), Vec3f(-300.0f, 0.0f, 0.0f), Vec3f::yAxis());
-	int i = getElapsedFrames()%5;
+	int i = getElapsedFrames();
 	i = i % (text.size() - 1);
 	if (i != currentFrame) {
 		currentFrame = i;
