@@ -37,6 +37,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "cinder/Rand.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/Camera.h"
+#include "cinder/Utilities.h"
+#include "cinder/Timeline.h"
 #include <vector>
 #include <list>
 
@@ -84,5 +86,6 @@ private:
 	char SenderName[256];                       // sender name 
 	gl::Texture spoutTexture;                   // Local Cinder texture used for sharing
 	// ----------------------------
-
+	string text;
+	int currentFrame;
 };

@@ -47,6 +47,8 @@ void ReymentaTextInputTweenApp::setup()
 
 	// init text
 	//addChar('.');
+	currentFrame = -1;
+	text = loadString(loadAsset("lyrics.txt"));
 }
 void ReymentaTextInputTweenApp::keyDown(KeyEvent event)
 {
@@ -106,16 +108,32 @@ void ReymentaTextInputTweenApp::removeChar()
 }
 void ReymentaTextInputTweenApp::update()
 {
-	float camDistDest = 600.0f + sin(mCharacters.size() * 0.1f) * 300.0f;
-	mCamDist -= (mCamDist - camDistDest) * 0.1f;
+	//float camDistDest = 600.0f + sin(mCharacters.size() * 0.1f) * 300.0f;
+	//mCamDist -= (mCamDist - camDistDest) * 0.1f;
 
-	mCam.lookAt(Vec3f(0.0f, 0.0f, mCamDist), Vec3f::zero(), Vec3f::yAxis());
+	//mCam.lookAt(Vec3f(300.0f, 0.0f, mCamDist), Vec3f::zero(), Vec3f::yAxis());
+	mCam.lookAt(Vec3f(0.0f, 0.0f, 600.0f), Vec3f(-300.0f, 0.0f, 0.0f), Vec3f::yAxis());
+	int i = getElapsedFrames()%5;
+	i = i % (text.size() - 1);
+	if (i != currentFrame) {
+		currentFrame = i;
+		char c[2];
+		sprintf_s(c, "%s", text.substr(i, 1).c_str());
+		addChar(*c);
+		if (!mCharacters.empty()) {
+			if (mCharacters.size() > 30) {
+				mCharacters.erase(mCharacters.begin());
+			}
+		}
+	}
+
+	getWindow()->setTitle("(" + toString(floor(getAverageFps())) + " fps) TextTween");
 
 }
 
 void ReymentaTextInputTweenApp::draw()
 {
-    gl::clear( Color( 0.0f, 0.0f, 0.0f ) ); // red/brown to be different
+    gl::clear( Color( 0.0f, 0.0f, 0.0f ) ); 
     
 	gl::setMatrices(mCam);
 	gl::multModelView(mSceneMatrix().inverted());
