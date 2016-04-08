@@ -59,6 +59,7 @@ public:
 	void draw();
 	void shutdown();
 	void keyDown(KeyEvent event);
+	void mouseDown(MouseEvent event);
 
 	void addChar(char c);
 	void removeChar();
@@ -86,6 +87,10 @@ private:
 	char SenderName[256];                       // sender name 
 	gl::Texture spoutTexture;                   // Local Cinder texture used for sharing
 	// ----------------------------
-	string text;
+	string currentText;
+	vector<string>	strings;
+	int stringIndex;
 	int currentFrame;
+	int startFrame;
+	bool running;
 };

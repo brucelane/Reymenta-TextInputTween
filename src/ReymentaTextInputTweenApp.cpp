@@ -32,23 +32,32 @@ void ReymentaTextInputTweenApp::setup()
 	gl::enableAlphaBlending();
 
 	// font
-	Font customFont(Font(loadResource(RES_TEXTTWEEN), 400));
+	Font customFont(Font(loadResource(RES_TEXTTWEEN), 200));
 	gl::TextureFont::Format f;
 	f.enableMipmapping(true);
 	mTextureFont = gl::TextureFont::create(customFont, f);
 
 	// camera
 	mCamDist = 600.0f;
-	mCam.setPerspective(75.0f, getWindowAspectRatio(), 0.1f, 5000.0f);
+	mCam.setPerspective(75.0f, getWindowAspectRatio(), 0.1f, 15000.0f);
 	mCam.lookAt(Vec3f(0.0f, 0.0f, mCamDist), Vec3f::zero(), Vec3f::yAxis());
-
+	mCam.setLensShiftHorizontal(-0.4);
 	// scene
 	mSceneMatrix = mSceneDestMatrix = Matrix44f::identity();
 
 	// init text
-	//addChar('.');
+	/*addChar('A'); addChar('N'); addChar('D'); addChar(' ');
+	addChar('H');	addChar('E'); addChar(' ');
+	addChar('S');	addChar('A'); addChar('Y'); addChar('S');*/
+	running = false;
+	stringIndex = 0;
+	strings.push_back(" AND HE SAYS ");
+	strings.push_back(" LIQUID LOVE, NO TIME NO TIME ABOVE ");
+	strings.push_back(" ON THE 26, BABY WE'LL FIND BLISS ");
 	currentFrame = -1;
-	text = loadString(loadAsset("lyrics.txt"));
+	startFrame = 0;
+	currentText = loadString(loadAsset("lyrics.txt"));
+	setFrameRate(32.0f);
 }
 void ReymentaTextInputTweenApp::keyDown(KeyEvent event)
 {
@@ -64,7 +73,12 @@ void ReymentaTextInputTweenApp::keyDown(KeyEvent event)
 }
 void ReymentaTextInputTweenApp::addChar(char c)
 {
-	c = toupper(c); // Alphabet-IV.tff seems to be missing some capital letters (strange, since it's an all-caps font)
+	if (c == 32) {
+		c = 97;
+	}
+	else { 
+		c = toupper(c);
+	}
 	int count = mCharacters.size();
 
 	if (count > 0)
@@ -106,26 +120,44 @@ void ReymentaTextInputTweenApp::removeChar()
 		timeline().apply(&mSceneMatrix, mSceneDestMatrix, 1.0f, EaseOutAtan(10));
 	}
 }
+void ReymentaTextInputTweenApp::mouseDown(MouseEvent event)
+{
+	running = !running;
+	startFrame = getElapsedFrames();
+	//if (running ) {
+		mCharacters.clear();
+		//ON THE 26, BABY WE'LL FIND BLISS
+		//currentText = secondText;
+		stringIndex++;
+		if (stringIndex > strings.size() - 1) stringIndex = 0;
+	
+	// {
+}
 void ReymentaTextInputTweenApp::update()
 {
-	//float camDistDest = 600.0f + sin(mCharacters.size() * 0.1f) * 300.0f;
-	//mCamDist -= (mCamDist - camDistDest) * 0.1f;
-
-	//mCam.lookAt(Vec3f(300.0f, 0.0f, mCamDist), Vec3f::zero(), Vec3f::yAxis());
-	mCam.lookAt(Vec3f(0.0f, 0.0f, 600.0f), Vec3f(-300.0f, 0.0f, 0.0f), Vec3f::yAxis());
-	int i = getElapsedFrames();
-	i = i % (text.size() - 1);
-	if (i != currentFrame) {
-		currentFrame = i;
-		char c[2];
-		sprintf_s(c, "%s", text.substr(i, 1).c_str());
-		addChar(*c);
-		if (!mCharacters.empty()) {
-			if (mCharacters.size() > 30) {
-				mCharacters.erase(mCharacters.begin());
+	int i = getElapsedFrames()-startFrame;
+	if (running) {
+		i = i % (currentText.size() - 1);
+		if (i != currentFrame) {
+			currentFrame = i;
+			char c[2];
+			sprintf_s(c, "%s", currentText.substr(i, 1).c_str());
+			addChar(*c);
+			if (!mCharacters.empty()) {
+				if (mCharacters.size() > 35) {
+					mCharacters.erase(mCharacters.begin(), mCharacters.begin()+10);
+				}
 			}
 		}
 	}
+	else {
+		if (i - startFrame < strings[stringIndex].size() - 1) {
+			char c[2];
+			sprintf_s(c, "%s", strings[stringIndex].substr(i - startFrame, 1).c_str());
+			addChar(*c);
+		}
+	}
+
 
 	getWindow()->setTitle("(" + toString(floor(getAverageFps())) + " fps) TextTween");
 
