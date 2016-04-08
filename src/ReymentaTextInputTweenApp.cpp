@@ -4,11 +4,10 @@
 void ReymentaTextInputTweenApp::prepareSettings(Settings *settings)
 {
         g_Width  = 640;
-        g_Height = 481;
+        g_Height = 480;
         settings->setWindowSize( g_Width, g_Height );
         settings->setFullScreen( false );
         settings->setResizable( false ); // keep the screen size constant for a sender
-        settings->setFrameRate( 60.0f );
 }
 // ----------------------------
 
@@ -32,7 +31,7 @@ void ReymentaTextInputTweenApp::setup()
 	gl::enableAlphaBlending();
 
 	// font
-	Font customFont(Font(loadResource(RES_TEXTTWEEN), 200));
+	Font customFont(Font(loadResource(RES_TEXTTWEEN), 100));
 	gl::TextureFont::Format f;
 	f.enableMipmapping(true);
 	mTextureFont = gl::TextureFont::create(customFont, f);
@@ -41,7 +40,7 @@ void ReymentaTextInputTweenApp::setup()
 	mCamDist = 600.0f;
 	mCam.setPerspective(75.0f, getWindowAspectRatio(), 0.1f, 15000.0f);
 	mCam.lookAt(Vec3f(0.0f, 0.0f, mCamDist), Vec3f::zero(), Vec3f::yAxis());
-	mCam.setLensShiftHorizontal(-0.4);
+	mCam.setLensShiftHorizontal(-0.6);
 	// scene
 	mSceneMatrix = mSceneDestMatrix = Matrix44f::identity();
 
@@ -51,7 +50,7 @@ void ReymentaTextInputTweenApp::setup()
 	addChar('S');	addChar('A'); addChar('Y'); addChar('S');*/
 	running = false;
 	stringIndex = 0;
-	strings.push_back(" AND HE SAYS ");
+	strings.push_back("             AND HE SAYS            ");
 	strings.push_back(" LIQUID LOVE, NO TIME NO TIME ABOVE ");
 	strings.push_back(" ON THE 26, BABY WE'LL FIND BLISS ");
 	currentFrame = -1;
@@ -124,36 +123,33 @@ void ReymentaTextInputTweenApp::mouseDown(MouseEvent event)
 {
 	running = !running;
 	startFrame = getElapsedFrames();
-	//if (running ) {
-		mCharacters.clear();
-		//ON THE 26, BABY WE'LL FIND BLISS
-		//currentText = secondText;
+	mCharacters.clear();
+	if (!running) {
 		stringIndex++;
 		if (stringIndex > strings.size() - 1) stringIndex = 0;
-	
-	// {
+	}
 }
 void ReymentaTextInputTweenApp::update()
 {
-	int i = getElapsedFrames()-startFrame;
+	frame = getElapsedFrames()-startFrame;
 	if (running) {
-		i = i % (currentText.size() - 1);
-		if (i != currentFrame) {
-			currentFrame = i;
+		frame = frame % (currentText.size() - 1);
+		if (frame != currentFrame) {
+			currentFrame = frame;
 			char c[2];
-			sprintf_s(c, "%s", currentText.substr(i, 1).c_str());
+			sprintf_s(c, "%s", currentText.substr(frame, 1).c_str());
 			addChar(*c);
 			if (!mCharacters.empty()) {
-				if (mCharacters.size() > 35) {
+				if (mCharacters.size() > 60) {
 					mCharacters.erase(mCharacters.begin(), mCharacters.begin()+10);
 				}
 			}
 		}
 	}
 	else {
-		if (i - startFrame < strings[stringIndex].size() - 1) {
+		if (frame < strings[stringIndex].size() - 1) {
 			char c[2];
-			sprintf_s(c, "%s", strings[stringIndex].substr(i - startFrame, 1).c_str());
+			sprintf_s(c, "%s", strings[stringIndex].substr(frame, 1).c_str());
 			addChar(*c);
 		}
 	}

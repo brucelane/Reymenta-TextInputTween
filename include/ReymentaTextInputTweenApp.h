@@ -91,6 +91,7 @@ private:
 	vector<string>	strings;
 	int stringIndex;
 	int currentFrame;
+	int frame;
 	int startFrame;
 	bool running;
 };
